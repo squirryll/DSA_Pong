@@ -1,5 +1,6 @@
 #include <ShaderManager.h>
 #include <GameObject.h>
+#include <Mesh.h>
 #include <Camera.h>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -217,6 +218,8 @@ int main()
 	c = glGetUniformLocation(shaderProgramIndex, "camera");
 	glUniformMatrix4fv(c, 1, GL_FALSE, value_ptr(camera));
 
+	Mesh m(verts, elements, vaoIndex, numElements);
+
 	// Main game loop.
 	while (!glfwWindowShouldClose(windowPtr))
 	{
@@ -229,9 +232,8 @@ int main()
 		// Clear the screen.
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		// Rebinding this shape's vaoIndex is needed if drawing more than one shape.
-		glBindVertexArray(vaoIndex);
-		glDrawElements(GL_TRIANGLES, numElements, GL_UNSIGNED_SHORT, (void *)0);
+		// Draw mesh.
+		m.draw();
 
 		// Swap the front (what the screen displays) and back (what OpenGL draws to) buffers.
 		glfwSwapBuffers(windowPtr);

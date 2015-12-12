@@ -1,15 +1,18 @@
-﻿Build started 12/10/2015 10:17:33 AM.
-     1>Project "D:\Users\alr9596\Dropbox\Triangle\Triangle\Triangle\Triangle.vcxproj" on node 2 (Build target(s)).
+﻿Build started 12/11/2015 11:36:08 PM.
+     1>Project "C:\Users\Mandy\Documents\GitHub\DSA_Pong\Triangle\Triangle\Triangle\Triangle.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt Main.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt Main.cpp Mesh.cpp
+         Mesh.cpp
          Main.cpp
-     1>d:\users\alr9596\dropbox\triangle\triangle\triangle\main.cpp(104): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-     1>d:\users\alr9596\dropbox\triangle\triangle\triangle\main.cpp(209): warning C4305: '=': truncation from 'double' to 'float'
-     1>d:\users\alr9596\dropbox\triangle\triangle\triangle\main.cpp(210): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+     1>c:\users\mandy\documents\github\dsa_pong\triangle\triangle\triangle\main.cpp(104): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+     1>c:\users\mandy\documents\github\dsa_pong\triangle\triangle\triangle\main.cpp(209): warning C4305: '=': truncation from 'double' to 'float'
+     1>c:\users\mandy\documents\github\dsa_pong\triangle\triangle\triangle\main.cpp(210): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+         Generating Code...
        Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\Users\alr9596\Dropbox\Triangle\Triangle\Debug\Triangle.exe" /INCREMENTAL /NOLOGO opengl32.lib glew32.lib glfw3.lib SOIL.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"D:\Users\alr9596\Dropbox\Triangle\Triangle\Debug\Triangle.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\Users\alr9596\Dropbox\Triangle\Triangle\Debug\Triangle.lib" /MACHINE:X86 Debug\Camera.obj
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Mandy\Documents\GitHub\DSA_Pong\Triangle\Triangle\Debug\Triangle.exe" /INCREMENTAL /NOLOGO opengl32.lib glew32.lib glfw3.lib SOIL.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"C:\Users\Mandy\Documents\GitHub\DSA_Pong\Triangle\Triangle\Debug\Triangle.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Mandy\Documents\GitHub\DSA_Pong\Triangle\Triangle\Debug\Triangle.lib" /MACHINE:X86 Debug\Camera.obj
          Debug\GameObject.obj
          Debug\Main.obj
+         Debug\Mesh.obj
          Debug\ShaderManager.obj
          SOIL.lib(SOIL.obj) : MSIL .netmodule or module compiled with /GL found; restarting link with /LTCG; add /LTCG to the link command line to improve linker performance
      1>LINK : warning LNK4075: ignoring '/INCREMENTAL' due to '/LTCG' specification
@@ -17,13 +20,13 @@
      1>LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
          Generating code
          Finished generating code
-     1>SOIL.lib(SOIL.obj) : warning LNK4099: PDB 'SOIL.pdb' was not found with 'SOIL.lib(SOIL.obj)' or at 'D:\Users\alr9596\Dropbox\Triangle\Triangle\Debug\SOIL.pdb'; linking object as if no debug info
-     1>SOIL.lib(image_helper.obj) : warning LNK4099: PDB 'SOIL.pdb' was not found with 'SOIL.lib(image_helper.obj)' or at 'D:\Users\alr9596\Dropbox\Triangle\Triangle\Debug\SOIL.pdb'; linking object as if no debug info
-     1>SOIL.lib(stb_image_aug.obj) : warning LNK4099: PDB 'SOIL.pdb' was not found with 'SOIL.lib(stb_image_aug.obj)' or at 'D:\Users\alr9596\Dropbox\Triangle\Triangle\Debug\SOIL.pdb'; linking object as if no debug info
-     1>SOIL.lib(image_DXT.obj) : warning LNK4099: PDB 'SOIL.pdb' was not found with 'SOIL.lib(image_DXT.obj)' or at 'D:\Users\alr9596\Dropbox\Triangle\Triangle\Debug\SOIL.pdb'; linking object as if no debug info
-         Triangle.vcxproj -> D:\Users\alr9596\Dropbox\Triangle\Triangle\Debug\Triangle.exe
-     1>Done Building Project "D:\Users\alr9596\Dropbox\Triangle\Triangle\Triangle\Triangle.vcxproj" (Build target(s)).
+     1>SOIL.lib(SOIL.obj) : warning LNK4099: PDB 'SOIL.pdb' was not found with 'SOIL.lib(SOIL.obj)' or at 'C:\Users\Mandy\Documents\GitHub\DSA_Pong\Triangle\Triangle\Debug\SOIL.pdb'; linking object as if no debug info
+     1>SOIL.lib(image_helper.obj) : warning LNK4099: PDB 'SOIL.pdb' was not found with 'SOIL.lib(image_helper.obj)' or at 'C:\Users\Mandy\Documents\GitHub\DSA_Pong\Triangle\Triangle\Debug\SOIL.pdb'; linking object as if no debug info
+     1>SOIL.lib(stb_image_aug.obj) : warning LNK4099: PDB 'SOIL.pdb' was not found with 'SOIL.lib(stb_image_aug.obj)' or at 'C:\Users\Mandy\Documents\GitHub\DSA_Pong\Triangle\Triangle\Debug\SOIL.pdb'; linking object as if no debug info
+     1>SOIL.lib(image_DXT.obj) : warning LNK4099: PDB 'SOIL.pdb' was not found with 'SOIL.lib(image_DXT.obj)' or at 'C:\Users\Mandy\Documents\GitHub\DSA_Pong\Triangle\Triangle\Debug\SOIL.pdb'; linking object as if no debug info
+         Triangle.vcxproj -> C:\Users\Mandy\Documents\GitHub\DSA_Pong\Triangle\Triangle\Debug\Triangle.exe
+     1>Done Building Project "C:\Users\Mandy\Documents\GitHub\DSA_Pong\Triangle\Triangle\Triangle\Triangle.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:01.45
+Time Elapsed 00:00:26.72
