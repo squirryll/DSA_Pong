@@ -1,6 +1,5 @@
 #pragma once
 #include <ShaderManager.h>
-#include <GameObject.h>
 #include <Mesh.h>
 #include <Camera.h>
 #include <GL/glew.h>
@@ -16,16 +15,22 @@
 using namespace std;
 using namespace glm;
 
-struct vert;
+struct vert
+{
+	vec3 pos;
+	vec2 uv;
+	vec3 norm;
+};
 
 class Mesh {
 public:
 	Mesh();
-	Mesh(const vector<vert> &verts, const vector<unsigned short> &elements, GLuint &vaoIndex, int &numElements);
+	Mesh(const vector<vert> &verts, const vector<unsigned short> &elements);
 	Mesh(string filename);
 	~Mesh();
 	void draw();
+	void setVaoIndex(GLuint vao);
 private:
 	GLuint vaoIndex;
-	int numElements;
+	int numElements = 0;
 };

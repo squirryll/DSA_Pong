@@ -1,6 +1,6 @@
 #include <ShaderManager.h>
-#include <GameObject.h>
 #include <Mesh.h>
+#include <GameObject.h>
 #include <Camera.h>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -15,10 +15,10 @@
 using namespace std;
 using namespace glm;
 
-GameObject player1("Cube.obj", vec3(0, 0, -0.5));
-GameObject player2("Cube.obj", vec3(0, 0, 0.5));
-GameObject ball("Cube.obj", vec3(0, 0, 0));
-GameObject court("Cube.obj", vec3(0, -0.5, 0));
+//GameObject player1("Cube.obj", vec3(0, 0, -0.5));
+//GameObject player2("Cube.obj", vec3(0, 0, 0.5));
+//GameObject ball("Cube.obj", vec3(0, 0, 0));
+//GameObject court("Cube.obj", vec3(0, -0.5, 0));
 
 // ---- Global variables.
 
@@ -52,37 +52,21 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	// Player 1.
 	if (key == GLFW_KEY_W)
 	{
-
-	}
-	if (key == GLFW_KEY_A)
-	{
-
+		// Go up.
 	}
 	if (key == GLFW_KEY_S)
 	{
-
-	}
-	if (key == GLFW_KEY_D)
-	{
-
+		// Go down.
 	}
 
 	// Player 2.
 	if (key == GLFW_KEY_UP)
 	{
-
-	}
-	if (key == GLFW_KEY_LEFT)
-	{
-
+		// Go up.
 	}
 	if (key == GLFW_KEY_DOWN)
 	{
-
-	}
-	if (key == GLFW_KEY_RIGHT)
-	{
-
+		// Go down.
 	}
 
 	// Quit.
@@ -105,8 +89,11 @@ void update(GLFWwindow* window)
 	float dt = currentTime - previousTime;
 	previousTime = currentTime;
 
+	// Update objects.
+
+
 	// Update model matrix.
-	model = translate(model, vec3(0, .01, 0));
+	//model = translate(model, vec3(0, .01, 0));
 	glUniformMatrix4fv(m, 1, GL_FALSE, value_ptr(model));
 }
 
@@ -147,18 +134,18 @@ int main()
 	}
 	glUseProgram(shaderProgramIndex);
 
-	// Load model data.
+	/*// Load model data.
 	vector<vert> verts = player1.getVerts();
-	vector<unsigned short> elements = player1.getElems();
+	vector<unsigned short> elements = player1.getElems();*/
 
 	// Upload vertex data.
-	int vertBufSize = sizeof(vert) * verts.size();
+	//int vertBufSize = sizeof(vert) * verts.size();
 	int posStart = 0;
 	int uvStart = sizeof(vec3);
 	int normStart = sizeof(vec3) + sizeof(vec2);
 	int stride = sizeof(vert);
-	int elBufSize = sizeof(GLushort)*elements.size();
-	int numElements = elements.size();
+	//int elBufSize = sizeof(GLushort)*elements.size();
+	//int numElements = elements.size();
 
 	// Generate buffers.
 	GLuint vaoIndex;
@@ -173,9 +160,13 @@ int main()
 	glBindBuffer(GL_ARRAY_BUFFER, vboIndex);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, eboIndex);
 
+	Mesh *mesh = new Mesh("Cube.obj");
+	mesh->setVaoIndex(vaoIndex);
+	GameObject p1(mesh, vec3(0, 0.5, 0));
+
 	// Upload data.
-	glBufferData(GL_ARRAY_BUFFER, vertBufSize, &verts[0], GL_STATIC_DRAW);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, elBufSize, &elements[0], GL_STATIC_DRAW);
+	//glBufferData(GL_ARRAY_BUFFER, vertBufSize, &verts[0], GL_STATIC_DRAW);
+	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, elBufSize, &elements[0], GL_STATIC_DRAW);
 
 	// Texture stuff.
 	GLuint texID = SOIL_load_OGL_texture(
@@ -218,8 +209,6 @@ int main()
 	c = glGetUniformLocation(shaderProgramIndex, "camera");
 	glUniformMatrix4fv(c, 1, GL_FALSE, value_ptr(camera));
 
-	Mesh m(verts, elements, vaoIndex, numElements);
-
 	// Main game loop.
 	while (!glfwWindowShouldClose(windowPtr))
 	{
@@ -227,13 +216,14 @@ int main()
 		glfwPollEvents();
 
 		// Update most things.
+		p1.update();
 		update(windowPtr);
 
 		// Clear the screen.
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		// Draw mesh.
-		m.draw();
+		p1.draw();
 
 		// Swap the front (what the screen displays) and back (what OpenGL draws to) buffers.
 		glfwSwapBuffers(windowPtr);

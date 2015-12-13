@@ -49,12 +49,18 @@ Mesh::Mesh(string filename)
 		vert newVert = { positions[i], uvs[i], normals[i] };
 		verts.push_back(newVert);
 	}
-	return verts;
+
+	Mesh(verts, faces);
 }
-Mesh::Mesh(const vector<vert> &verts, const vector<unsigned short> &elements, GLuint &vI, int &nE)
+Mesh::Mesh(const vector<vert> &verts, const vector<unsigned short> &elements)
 {
-	numElements = nE;
-	vaoIndex = vI;
+	int vertBufSize = sizeof(vert) * verts.size();
+	int elBufSize = sizeof(GLushort)*elements.size();
+	numElements = elements.size();
+
+	// Upload data.
+	glBufferData(GL_ARRAY_BUFFER, vertBufSize, &verts[0], GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, elBufSize, &elements[0], GL_STATIC_DRAW);
 }
 Mesh::~Mesh()
 {
@@ -65,4 +71,9 @@ void Mesh::draw()
 	// Rebinding this shape's vaoIndex is needed if drawing more than one shape.
 	glBindVertexArray(vaoIndex);
 	glDrawElements(GL_TRIANGLES, numElements, GL_UNSIGNED_SHORT, (void *)0);
+}
+
+void Mesh::setVaoIndex(GLuint vao)
+{
+	vaoIndex = vao;
 }
