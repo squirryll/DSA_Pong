@@ -1,5 +1,6 @@
 #pragma once
 #include "glm.hpp"
+#include "gtx\transform.hpp"
 #include "Mesh.h"
 #include <vector>
 #include <string>
@@ -12,9 +13,9 @@ class GameObject
 {
 public:
 	GameObject();
-	GameObject(Mesh *m);
+	GameObject(Mesh *m, GLuint shaderProgramIndex);
 	~GameObject();
-	void update();
+	void update(float dt);
 	void draw();
 	
 private:
@@ -27,4 +28,5 @@ private:
 	vec3 netForce;
 	float mass;
 	Mesh *mesh;
+	GLuint shaderProgramIndex;
 };

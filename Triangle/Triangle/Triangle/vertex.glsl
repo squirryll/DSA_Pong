@@ -8,12 +8,14 @@ out vec2 fragTexUV;
 out vec3 fragPos;
 out vec3 fragNorm;
 
-uniform mat4 model;
-uniform mat4 camera;
+//uniform mat4 model;
+//uniform mat4 camera;
+uniform mat4 worldMatrix;
 
 void main()
 {
-	 gl_Position = camera * model * vec4(vertPos, 1); 
+	 gl_Position = worldMatrix * vec4(vertPos, 1);
+	 //gl_Position = camera * model * vec4(vertPos, 1); 
 	 fragTexUV = vertTexUV;
 	 fragPos = gl_Position.xyz;
 	 fragNorm = normalize(vertNorm);

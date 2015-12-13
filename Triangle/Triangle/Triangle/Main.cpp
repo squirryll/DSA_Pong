@@ -15,11 +15,6 @@
 using namespace std;
 using namespace glm;
 
-//GameObject player1("Cube.obj", vec3(0, 0, -0.5));
-//GameObject player2("Cube.obj", vec3(0, 0, 0.5));
-//GameObject ball("Cube.obj", vec3(0, 0, 0));
-//GameObject court("Cube.obj", vec3(0, -0.5, 0));
-
 // ---- Global variables.
 
 // Constants.
@@ -84,17 +79,9 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 void update(GLFWwindow* window)
 {
-	// Get change in time for smooth animation.
-	float currentTime = glfwGetTime();
-	float dt = currentTime - previousTime;
-	previousTime = currentTime;
-
-	// Update objects.
-
-
 	// Update model matrix.
-	model = translate(model, vec3(0, 0, 0));
-	glUniformMatrix4fv(m, 1, GL_FALSE, value_ptr(model));
+	//model = translate(model, vec3(0, 0, 0));
+	//glUniformMatrix4fv(m, 1, GL_FALSE, value_ptr(model));
 }
 
 int main()
@@ -135,8 +122,8 @@ int main()
 	glUseProgram(shaderProgramIndex);
 
 	Mesh *mesh = new Mesh("Cube.obj");
-	GameObject p1(mesh);
-	GameObject p2(mesh);
+	GameObject p1(mesh, shaderProgramIndex);
+	GameObject p2(mesh, shaderProgramIndex);
 
 	// Engage drawing modes.
 	glClearColor(0.392f, 0.584f, 0.929f, 1.0f);
@@ -144,11 +131,11 @@ int main()
 	glEnable(GL_DEPTH_TEST);
 
 	// Set up model matrix.
-	m = glGetUniformLocation(shaderProgramIndex, "model");
-	glUniformMatrix4fv(m, 1, GL_FALSE,value_ptr(model));
+	//m = glGetUniformLocation(shaderProgramIndex, "model");
+	//glUniformMatrix4fv(m, 1, GL_FALSE,value_ptr(model));
 
 	// Set up projection matrix.
-	fov = M_PI / 2.0f;
+	/*fov = M_PI / 2.0f;
 	aspect = WIDTH / HEIGHT;
 	projection = perspective(fov, 1.3f, .01f, 1000.0f);
 
@@ -158,17 +145,23 @@ int main()
 	// Set up camera matrix.
 	camera = projection * view;
 	c = glGetUniformLocation(shaderProgramIndex, "camera");
-	glUniformMatrix4fv(c, 1, GL_FALSE, value_ptr(camera));
+	glUniformMatrix4fv(c, 1, GL_FALSE, value_ptr(camera));*/
 
 	// Main game loop.
 	while (!glfwWindowShouldClose(windowPtr))
 	{
+		// Get change in time for smooth animation.
+		float currentTime = glfwGetTime();
+		float dt = currentTime - previousTime;
+		previousTime = currentTime;
+
 		// Process queued window and input callback events.
 		glfwPollEvents();
 
 		// Update most things.
-		//p1.update();
 		update(windowPtr);
+		p1.update(dt);
+		p2.update(dt);
 
 		// Clear the screen.
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
