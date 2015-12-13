@@ -4,30 +4,17 @@ GameObject::GameObject()
 {
 }
 
-GameObject::GameObject(Mesh *m, vec3 pos)
+GameObject::GameObject(Mesh *m)
 {
 	mesh = m;
-	velocity = vec3(0);
-	position = pos;
-}
-void GameObject::setPos(vec3 pos)
-{
-	position = pos;
-}
-
-vec3 GameObject::getPos()
-{
-	return position;
-}
-
-vec3 GameObject::getVel()
-{
-	return velocity;
-}
-
-void GameObject::setVel(vec3 vel)
-{
-	velocity = vel;
+	vec3 location = vec3(0);
+	vec3 scale = vec3(1);
+	vec3 rAxis = vec3(0, 0, 1);
+	vec3 velocity = vec3(0);
+	vec3 netForce = vec3(0);
+	float angularVelocity = 0;
+	float rAngle = 0;
+	float mass = 1;
 }
 
 void GameObject::draw()
@@ -42,5 +29,5 @@ void GameObject::update()
 
 GameObject::~GameObject()
 {
-	delete mesh;
+
 }

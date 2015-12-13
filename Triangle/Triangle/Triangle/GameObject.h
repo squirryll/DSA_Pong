@@ -12,17 +12,19 @@ class GameObject
 {
 public:
 	GameObject();
-	GameObject(Mesh *m, vec3 pos);
+	GameObject(Mesh *m);
 	~GameObject();
-	void setPos(vec3 pos);
-	void setVel(vec3 vel);
-	vec3 getPos();
-	vec3 getVel();
 	void update();
 	void draw();
 	
 private:
+	vec3 location;
+	vec3 size;
+	float rAngle;
+	vec3 rAxis;
 	vec3 velocity;
-	vec3 position;
+	float angularVelocity;
+	vec3 netForce;
+	float mass;
 	Mesh *mesh;
 };

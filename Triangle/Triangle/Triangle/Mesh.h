@@ -1,6 +1,5 @@
 #pragma once
 #include <ShaderManager.h>
-#include <Mesh.h>
 #include <Camera.h>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -29,8 +28,7 @@ public:
 	Mesh(string filename);
 	~Mesh();
 	void draw();
-	void setVaoIndex(GLuint vao);
 private:
-	GLuint vaoIndex;
+	GLuint vaoIndex = 1;
 	int numElements = 0;
 };

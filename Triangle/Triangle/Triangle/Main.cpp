@@ -93,7 +93,7 @@ void update(GLFWwindow* window)
 
 
 	// Update model matrix.
-	//model = translate(model, vec3(0, .01, 0));
+	model = translate(model, vec3(0, 0, 0));
 	glUniformMatrix4fv(m, 1, GL_FALSE, value_ptr(model));
 }
 
@@ -105,7 +105,7 @@ int main()
 	}
 
 	// Create a windowed mode window.
-	GLFWwindow* windowPtr = glfwCreateWindow(WIDTH, HEIGHT, "Camera, Lighting and Texture", NULL, NULL);
+	GLFWwindow* windowPtr = glfwCreateWindow(WIDTH, HEIGHT, "Pong", NULL, NULL);
 	if (!windowPtr) {
 		glfwTerminate();
 		return -1;
@@ -134,58 +134,9 @@ int main()
 	}
 	glUseProgram(shaderProgramIndex);
 
-	/*// Load model data.
-	vector<vert> verts = player1.getVerts();
-	vector<unsigned short> elements = player1.getElems();*/
-
-	// Upload vertex data.
-	//int vertBufSize = sizeof(vert) * verts.size();
-	int posStart = 0;
-	int uvStart = sizeof(vec3);
-	int normStart = sizeof(vec3) + sizeof(vec2);
-	int stride = sizeof(vert);
-	//int elBufSize = sizeof(GLushort)*elements.size();
-	//int numElements = elements.size();
-
-	// Generate buffers.
-	GLuint vaoIndex;
-	glGenVertexArrays(1, &vaoIndex);
-	GLuint vboIndex;
-	glGenBuffers(1, &vboIndex);
-	GLuint eboIndex;
-	glGenBuffers(1, &eboIndex);
-
-	// Bind buffers.
-	glBindVertexArray(vaoIndex);
-	glBindBuffer(GL_ARRAY_BUFFER, vboIndex);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, eboIndex);
-
 	Mesh *mesh = new Mesh("Cube.obj");
-	mesh->setVaoIndex(vaoIndex);
-	GameObject p1(mesh, vec3(0, 0.5, 0));
-
-	// Upload data.
-	//glBufferData(GL_ARRAY_BUFFER, vertBufSize, &verts[0], GL_STATIC_DRAW);
-	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, elBufSize, &elements[0], GL_STATIC_DRAW);
-
-	// Texture stuff.
-	GLuint texID = SOIL_load_OGL_texture(
-		"archer.jpg", SOIL_LOAD_AUTO,
-		SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
-	glBindTexture(GL_TEXTURE_2D, texID);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(GL_FLOAT) * floatsPerVert, (void*)(sizeof(GL_FLOAT) * 3));
-
-	// Lighting stuff.
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(GL_FLOAT) * floatsPerVert, 0);
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(GL_FLOAT) * floatsPerVert, (void*)(sizeof(GL_FLOAT) * 5));
-
-	// Describe (to shader's pos uv and norm) how data is packed.
-	glEnableVertexAttribArray(0);
-	glEnableVertexAttribArray(1);
-	glEnableVertexAttribArray(2);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (void*)(posStart));
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, stride, (void*)(uvStart));
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, stride, (void*)(normStart));
+	GameObject p1(mesh);
+	GameObject p2(mesh);
 
 	// Engage drawing modes.
 	glClearColor(0.392f, 0.584f, 0.929f, 1.0f);
@@ -216,7 +167,7 @@ int main()
 		glfwPollEvents();
 
 		// Update most things.
-		p1.update();
+		//p1.update();
 		update(windowPtr);
 
 		// Clear the screen.
@@ -224,11 +175,13 @@ int main()
 
 		// Draw mesh.
 		p1.draw();
+		p2.draw();
 
 		// Swap the front (what the screen displays) and back (what OpenGL draws to) buffers.
 		glfwSwapBuffers(windowPtr);
 	}
 
+	delete mesh;
 	glfwTerminate();
 	return 0;
 }
