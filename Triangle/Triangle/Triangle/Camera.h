@@ -1,24 +1,15 @@
 #pragma once
-#define _USE_MATH_DEFINES
 #include "glm.hpp"
 #include "gtx\transform.hpp"
-#include <math.h>
+#include "GameObject.h"
 using namespace glm;
 
-class Camera
-{
+// Camera extends GameObject so it's able to be repositioned.
+class Camera:public GameObject
+ {
 public:
-	Camera();
-	~Camera();
-	void turn(float dx, float dy);
-	vec3 getLocation();
-	void move(vec3 movement);
-	vec3 getForward();
-	vec3 getLookAt();
-	vec3 getUp();
-	vec3 getRight();
+	 Camera(GLuint shader, vec3 p);
+	 void draw();
 private:
-	float yaw;
-	float pitch;
-	vec3 pos;
+	GLint uniformCameraMatrixLocation;
 };

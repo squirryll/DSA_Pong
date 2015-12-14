@@ -1,55 +1,13 @@
 #include "Camera.h"
 
-Camera::Camera()
+Camera::Camera(GLuint shader, vec3 p):GameObject(p)
 {
-	pos = vec3(0, 0, -2);
-	pitch = 0.0f;
-	yaw = 0.0f;
+	uniformCameraMatrixLocation = glGetUniformLocation(shader, "camera");
 }
 
-Camera::~Camera()
+// Overrides GameObject's draw so there is no need to have a mesh associated with Camera.
+void Camera::draw() 
 {
-}
-
-void Camera::turn(float dx, float dy)
-{
-	yaw += dx * .1;
-	pitch += dy * .1;
-}
-
-vec3 Camera::getLocation()
-{
-	return pos;
-}
-
-void Camera::move(vec3 movement)
-{
-	pos += movement;
-}
-
-vec3 Camera::getForward()
-{
-	float x = cos(pitch) * sin(yaw);
-	float y = sin(pitch);
-	float z = cos(pitch) * cos(yaw);
-	return vec3(x, y, z);
-}
-
-vec3 Camera::getLookAt()
-{
-	return getLocation() + getForward();
-}
-
-vec3 Camera::getUp()
-{
-	float pi = (float)M_PI;
-	float x = cos(pitch + pi / 2) * sin(yaw);
-	float y = sin(pitch + pi / 2);
-	float z = -cos(pitch + pi / 2) * cos(yaw);
-	return vec3(x, y, z);
-}
-
-vec3 Camera::getRight()
-{
-	return cross(getForward(), getUp());
+	mat4 cameraMatrix = perspective(3.14159f * .4f, 800.0f / 600.0f, .01f, 1000.f) * lookAt(location, vec3(0, 0, 0), vec3(0, 1, 0));
+	glUniformMatrix4fv(uniformCameraMatrixLocation, 1, GL_FALSE, value_ptr(cameraMatrix));
 }

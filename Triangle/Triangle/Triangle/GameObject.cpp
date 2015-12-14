@@ -1,40 +1,45 @@
 #include "GameObject.h"
 
-GameObject::GameObject()
+GameObject::GameObject(vec3 p)
 {
-}
-
-GameObject::GameObject(Mesh *m, GLuint shaderProgramIndex)
-{
-	mesh = m;
-	location = vec3(0);
-	size = vec3(1);
+	location = p;
+	size = vec3(1, 1, 1);
 	rAxis = vec3(0, 0, 1);
-	velocity = vec3(0);
-	netForce = vec3(0);
+	velocity = vec3(0, 0, 0);
+	netForce = vec3(0, 0, 0);
 	angularVelocity = 0;
 	rAngle = 0;
 	mass = 1;
+}
+
+GameObject::GameObject(Mesh *m, GLuint shader, vec3 p, vec3 s, vec3 r)
+{
+	mesh = m;
+	location = p;
+	size = s;
+	rAxis = r;
+	velocity = vec3(0, 0, 0);
+	netForce = vec3(0, 0, 0);
+	angularVelocity = 0;
+	rAngle = 0;
+	mass = 1;
+	shaderProgramIndex = shader;
 }
 
 void GameObject::draw()
 {
 	mat4 worldMatrix = translate(location) * scale(size) * rotate(rAngle, rAxis);
 	GLint uniformWorldMatrixLocation = glGetUniformLocation(shaderProgramIndex, "worldMatrix");
-	glProgramUniformMatrix4fv(shaderProgramIndex, uniformWorldMatrixLocation, 1, GL_FALSE, &worldMatrix[0][0]);
+	glUniformMatrix4fv(uniformWorldMatrixLocation, 1, GL_FALSE, value_ptr(worldMatrix));
+
 	mesh->draw();
 }
 
 void GameObject::update(float dt)
 {
-	//netForce += vec3(0, -9.81, 0); // Gravity
+	//netForce += vec3(0, -0.5, 0); // Gravity
 	//netForce += -velocity * 0.2f; // Drag
-	//velocity += (dt * netForce) / mass;
-	//location += velocity * dt;
-	//netForce = vec3(0);
-}
-
-GameObject::~GameObject()
-{
-
+	velocity += (dt * netForce) / mass;
+	location += velocity * dt;
+	netForce = vec3(0);
 }

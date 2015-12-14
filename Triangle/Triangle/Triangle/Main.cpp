@@ -5,63 +5,45 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm.hpp>
-#include <gtx/transform.hpp>
-#include <gtc/type_ptr.hpp>
-#include <SOIL.h>
 #include <vector>
-#include <fstream>
-#include <sstream>
 #include <string>
 using namespace std;
 using namespace glm;
 
-// ---- Global variables.
+// ----- Global variables.
 
-// Constants.
+// Window constants.
 int WIDTH = 800;
 int HEIGHT = 600;
-float CAM_SPEED = 2.5f;
 
 // World time.
 float previousTime;
 
-// Cube rotation variables.
-bool mouseButtonHeld = false;
-float angleChange = 0.0;	 
-
-// Shader variables.
+// Shader program.
 GLuint shaderProgramIndex;	 
-mat4 model, view, projection, camera;
-GLint c;
-GLint m;
-int floatsPerVert;
-float fov;
-float aspect;
 
-// Camera.
-Camera cam;
 
-// User input for players.
+// ----- User input.
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
 	// Player 1.
 	if (key == GLFW_KEY_W)
 	{
-		// Go up.
+		/// TODO: Go up. (Alter netForce of GameObject in upward direction)
 	}
 	if (key == GLFW_KEY_S)
 	{
-		// Go down.
+		/// TODO: Go down.
 	}
 
 	// Player 2.
 	if (key == GLFW_KEY_UP)
 	{
-		// Go up.
+		/// TODO: Go up.
 	}
 	if (key == GLFW_KEY_DOWN)
 	{
-		// Go down.
+		/// TODO: Go down.
 	}
 
 	// Quit.
@@ -73,15 +55,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	// Reset.
 	if (key == GLFW_KEY_R)
 	{
-	
+		/// TODO: Reset game.
 	}
-}
-
-void update(GLFWwindow* window)
-{
-	// Update model matrix.
-	//model = translate(model, vec3(0, 0, 0));
-	//glUniformMatrix4fv(m, 1, GL_FALSE, value_ptr(model));
 }
 
 int main()
@@ -92,7 +67,7 @@ int main()
 	}
 
 	// Create a windowed mode window.
-	GLFWwindow* windowPtr = glfwCreateWindow(WIDTH, HEIGHT, "Pong", NULL, NULL);
+	GLFWwindow* windowPtr = glfwCreateWindow(WIDTH, HEIGHT, "[Game Name!]", NULL, NULL);
 	if (!windowPtr) {
 		glfwTerminate();
 		return -1;
@@ -121,31 +96,20 @@ int main()
 	}
 	glUseProgram(shaderProgramIndex);
 
-	Mesh *mesh = new Mesh("Cube.obj");
-	GameObject p1(mesh, shaderProgramIndex);
-	GameObject p2(mesh, shaderProgramIndex);
+	// Initialize camera.
+	Camera cam(shaderProgramIndex, vec3(0, 0, 3));
+
+	// Initialize basic cube mesh.
+	Mesh *cube = new Mesh("Cube.obj");
+
+	// Create player objects.
+	GameObject p1(cube, shaderProgramIndex, vec3(-1.5, 0, 0), vec3(0.3, 1, 1), vec3(0, 0, 1));
+	GameObject p2(cube, shaderProgramIndex, vec3(1.5, 0, 0), vec3(0.3, 1, 1), vec3(0, 0, 1));
 
 	// Engage drawing modes.
 	glClearColor(0.392f, 0.584f, 0.929f, 1.0f);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	glEnable(GL_DEPTH_TEST);
-
-	// Set up model matrix.
-	//m = glGetUniformLocation(shaderProgramIndex, "model");
-	//glUniformMatrix4fv(m, 1, GL_FALSE,value_ptr(model));
-
-	// Set up projection matrix.
-	/*fov = M_PI / 2.0f;
-	aspect = WIDTH / HEIGHT;
-	projection = perspective(fov, 1.3f, .01f, 1000.0f);
-
-	// Set up view matrix.
-	view = lookAt(cam.getLocation(), cam.getLookAt(), cam.getUp());
-
-	// Set up camera matrix.
-	camera = projection * view;
-	c = glGetUniformLocation(shaderProgramIndex, "camera");
-	glUniformMatrix4fv(c, 1, GL_FALSE, value_ptr(camera));*/
 
 	// Main game loop.
 	while (!glfwWindowShouldClose(windowPtr))
@@ -158,15 +122,16 @@ int main()
 		// Process queued window and input callback events.
 		glfwPollEvents();
 
-		// Update most things.
-		update(windowPtr);
+		// Update game objects.
+		cam.update(dt);
 		p1.update(dt);
 		p2.update(dt);
 
 		// Clear the screen.
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		// Draw mesh.
+		// Draw game objects.
+		cam.draw();
 		p1.draw();
 		p2.draw();
 
@@ -174,7 +139,9 @@ int main()
 		glfwSwapBuffers(windowPtr);
 	}
 
-	delete mesh;
+	// Clean up.
+	delete cube;
 	glfwTerminate();
+
 	return 0;
 }

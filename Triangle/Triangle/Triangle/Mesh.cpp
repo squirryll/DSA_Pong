@@ -2,7 +2,7 @@
 
 Mesh::Mesh()
 {
-	// - - - Raw tetrahedron data.
+	// Raw tetrahedron data.
 	// Positions, uvs and normals : one of each per vertex.
 	vector<vec3> positions = {
 		vec3(1, 1, 0),
@@ -90,7 +90,7 @@ Mesh::Mesh(string filename)
 
 Mesh::Mesh(const vector<vert> &verts, const vector<unsigned short> &elements)
 {
-	// - - - Start uploading vertex data for this mesh and setting up per-vertex variables in the shader.
+	// Start uploading vertex data for this mesh and setting up per-vertex variables in the shader.
 	int vertBufSize = sizeof(vert) * verts.size();
 	int posStart = 0;
 	int uvStart = sizeof(vec3);
@@ -117,7 +117,7 @@ Mesh::Mesh(const vector<vert> &verts, const vector<unsigned short> &elements)
 
 	// Texture stuff.
 	GLuint texID = SOIL_load_OGL_texture(
-		"archer.jpg", SOIL_LOAD_AUTO,
+		"metal.jpg", SOIL_LOAD_AUTO,
 		SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
 	glBindTexture(GL_TEXTURE_2D, texID);
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(GL_FLOAT) * floatsPerVert, (void*)(sizeof(GL_FLOAT) * 3));
@@ -141,8 +141,4 @@ void Mesh::draw()
 	// Rebinding this shape's vaoIndex is needed if drawing more than one shape.
 	glBindVertexArray(vaoIndex);
 	glDrawElements(GL_TRIANGLES, numElements, GL_UNSIGNED_SHORT, (void *)0);
-}
-
-Mesh::~Mesh()
-{
 }

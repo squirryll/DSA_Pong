@@ -1,6 +1,7 @@
 #pragma once
 #include "glm.hpp"
-#include "gtx\transform.hpp"
+#include "gtx/transform.hpp"
+#include <gtc/type_ptr.hpp>
 #include "Mesh.h"
 #include <vector>
 #include <string>
@@ -12,13 +13,10 @@ using namespace std;
 class GameObject
 {
 public:
-	GameObject();
-	GameObject(Mesh *m, GLuint shaderProgramIndex);
-	~GameObject();
+	GameObject(vec3 p);
+	GameObject(Mesh *m, GLuint shaderProgramIndex, vec3 p, vec3 s, vec3 r);
 	void update(float dt);
 	void draw();
-	
-private:
 	vec3 location;
 	vec3 size;
 	float rAngle;
