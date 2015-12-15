@@ -7,6 +7,7 @@
 #include <glm.hpp>
 #include <vector>
 #include <string>
+#include <iostream>
 using namespace std;
 using namespace glm;
 
@@ -22,28 +23,43 @@ float previousTime;
 // Shader program.
 GLuint shaderProgramIndex;	 
 
+// Player objects
+GameObject p1(vec3(0, 0, 0));
+GameObject p2(vec3(0, 0, 0));
+GameObject ball(vec3(0, 0, 0));
+
+// Some Game Variables
+int pSpeed = 2;
+int p1Score = 0;
+int p2Score = 0;
+vec3 ballVel = vec3(0, 0, 0);
+
 
 // ----- User input.
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
 	// Player 1.
 	if (key == GLFW_KEY_W)
-	{
-		/// TODO: Go up. (Alter netForce of GameObject in upward direction)
+	{	
+		if(p1.location.y < 2)
+			p1.netForce += vec3(0, pSpeed, 0);
 	}
 	if (key == GLFW_KEY_S)
 	{
-		/// TODO: Go down.
+		if (p1.location.y > -2)
+			p1.netForce += vec3(0, -pSpeed, 0);
 	}
 
 	// Player 2.
 	if (key == GLFW_KEY_UP)
 	{
-		/// TODO: Go up.
+		if (p2.location.y < 2)
+			p2.netForce += vec3(0, pSpeed, 0);
 	}
 	if (key == GLFW_KEY_DOWN)
 	{
-		/// TODO: Go down.
+		if (p2.location.y > -2)
+			p2.netForce += vec3(0, -pSpeed, 0);
 	}
 
 	// Quit.
@@ -56,7 +72,27 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	if (key == GLFW_KEY_R)
 	{
 		/// TODO: Reset game.
+		p1.location = vec3(-1.5, 0, 0);
+		p1.netForce = vec3(0, 0, 0);
+		p1.velocity = vec3(0, 0, 0);
+		p2.location = vec3(1.5, 0, 0);
+		p2.netForce = vec3(0, 0, 0);
+		p2.velocity = vec3(0, 0, 0);
+		ball.location = vec3(0, 0, 0);
+		ball.netForce = vec3(0, 0, 0);
+		ball.velocity = vec3(0, 0, 0);
+		p1Score = 0;
+		p2Score = 0;
 	}
+}
+
+// Reset the initial velocity of the ball
+void resetBall() {
+	int dir = rand() % 2;
+	if(dir == 0){ballVel = vec3(1, 0, 0); }
+	else { ballVel = vec3(-1, 0, 0); }
+
+	ball.location = vec3(0,0,0);
 }
 
 int main()
@@ -101,15 +137,21 @@ int main()
 
 	// Initialize basic cube mesh.
 	Mesh *cube = new Mesh("Cube.obj");
+	//Mesh *poly = new Mesh("Poly.obj");
 
-	// Create player objects.
-	GameObject p1(cube, shaderProgramIndex, vec3(-1.5, 0, 0), vec3(0.3, 1, 1), vec3(0, 0, 1));
-	GameObject p2(cube, shaderProgramIndex, vec3(1.5, 0, 0), vec3(0.3, 1, 1), vec3(0, 0, 1));
+	// Assign player objects.
+	p1 = GameObject(cube, shaderProgramIndex, vec3(-1.5, 0, 0), vec3(0.3, 1, 1), vec3(0, 0, 1));
+	p2 = GameObject(cube, shaderProgramIndex, vec3(1.5, 0, 0), vec3(0.3, 1, 1), vec3(0, 0, 1));
+	ball = GameObject(cube, shaderProgramIndex, vec3(0, 0, 0), vec3(0.3, 0.3, 0.3), vec3(0, 0, 1));
+
+	// Set ball direction
+	resetBall();
 
 	// Engage drawing modes.
 	glClearColor(0.392f, 0.584f, 0.929f, 1.0f);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	glEnable(GL_DEPTH_TEST);
+
 
 	// Main game loop.
 	while (!glfwWindowShouldClose(windowPtr))
@@ -119,13 +161,56 @@ int main()
 		float dt = currentTime - previousTime;
 		previousTime = currentTime;
 
+		// Update score board
+		system("CLS");
+		cout << p1Score << " | " << p2Score << endl;
+		cout << ball.location.x << endl;
+
 		// Process queued window and input callback events.
 		glfwPollEvents();
 
-		// Update game objects.
+		/// TODO: Set up collision detection here to change ballVel
+
+		// Update ball's velocity for movement
+		ball.velocity = ballVel;
+
+		// Update game objects.		
 		cam.update(dt);
 		p1.update(dt);
 		p2.update(dt);
+		ball.update(dt);
+
+		// Check if ball has left screen on either side, increment points
+		if (ball.location.x > 3) {
+			p1Score++;
+			resetBall();
+		}
+		if (ball.location.x < -3) {
+			p2Score++;
+			resetBall();
+		}
+
+		// Ensure player paddles do not leave the screen
+		if (p1.location.y > 2) {
+			p1.location.y = 2;
+			p1.velocity = vec3(0 ,0 ,0);
+			p1.netForce = vec3(0, 0, 0);
+		}
+		if (p1.location.y < -2) { 
+			p1.location.y = -2;
+			p1.velocity = vec3(0, 0, 0);
+			p1.netForce = vec3(0, 0, 0);
+		}
+		if (p2.location.y > 2) {
+			p2.location.y = 2; 
+			p2.velocity = vec3(0, 0, 0);
+			p2.netForce = vec3(0, 0, 0);
+		}
+		if (p2.location.y < -2) { 
+			p2.location.y = -2;
+			p2.velocity = vec3(0, 0, 0);
+			p2.netForce = vec3(0, 0, 0);
+		}
 
 		// Clear the screen.
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -134,6 +219,7 @@ int main()
 		cam.draw();
 		p1.draw();
 		p2.draw();
+		ball.draw();
 
 		// Swap the front (what the screen displays) and back (what OpenGL draws to) buffers.
 		glfwSwapBuffers(windowPtr);
