@@ -164,7 +164,6 @@ int main()
 		// Update score board
 		system("CLS");
 		cout << p1Score << " | " << p2Score << endl;
-		cout << ball.location.x << endl;
 
 		// Process queued window and input callback events.
 		glfwPollEvents();
