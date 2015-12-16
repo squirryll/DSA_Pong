@@ -30,7 +30,7 @@ GameObject ball(vec3(0, 0, 0));
 
 // Some Game Variables
 int pSpeed = 4;
-int ballSpeed = 10;
+float ballSpeed = 10;
 int p1Score = 0;
 int p2Score = 0;
 vec3 ballVel = vec3(0, 0, 0);
@@ -44,24 +44,26 @@ float randomNumber(float min, float max)
 // ----- CheckCollisions
 void checkCollisions()
 {
+	ballSpeed += .05;
 	if (ball.collidesWith(p1))
 	{
-		if (ballVel.x < 0)
-		{
-			ballVel.x = ball.location.x - p1.location.x;
-			ballVel.y = ball.location.y - p1.location.y;
-			ballVel = vec3(ballVel.x / ballVel.length() * ballSpeed, ballVel.y / ballVel.length() * ballSpeed, 0);
+		ballVel.x = ball.location.x - p1.location.x;
+		ballVel.y = ball.location.y - p1.location.y;
+		if (ballVel.x == 0) {
+			ballVel.x = .1;
 		}
+		ballVel = vec3(ballVel.x / ballVel.length() * ballSpeed, ballVel.y / ballVel.length() * ballSpeed, 0);
 	}
 
-	if(ball.collidesWith(p2))
+	if (ball.collidesWith(p2))
 	{
-		if (ballVel.x > 0)
-		{
-			ballVel.x = ball.location.x - p2.location.x;
-			ballVel.y = ball.location.y - p2.location.y;
-			ballVel = vec3(ballVel.x / ballVel.length() * ballSpeed, ballVel.y / ballVel.length() * ballSpeed, 0);
+		ballSpeed += .05;
+		ballVel.x = ball.location.x - p2.location.x;
+		ballVel.y = ball.location.y - p2.location.y;
+		if (ballVel.x == 0) {
+			ballVel.x = -.1;
 		}
+		ballVel = vec3(ballVel.x / ballVel.length() * ballSpeed, ballVel.y / ballVel.length() * ballSpeed, 0);
 	}
 }
 
@@ -73,6 +75,8 @@ void reset() {
 	else { ballVel = vec3(-1, 0, 0); }
 	// Reset location
 	ball.location = vec3(0, 0, 0);
+	// Reset speed
+	ballSpeed = 10;
 	// Reset players
 	p1.location = vec3(-2, 0, 0);
 	p1.netForce = vec3(0, 0, 0);
