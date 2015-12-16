@@ -34,6 +34,33 @@ int p1Score = 0;
 int p2Score = 0;
 vec3 ballVel = vec3(0, 0, 0);
 
+// ----- Random number generation
+float randomNumber(float min, float max)
+{
+	return ((float(rand()) / float(RAND_MAX)) * (max - min)) + min;
+}
+
+// ----- CheckCollisions
+void checkCollisions()
+{
+	if (ball.collidesWith(p1))
+	{
+		if (ballVel.x < 0)
+		{
+			ballVel.x *= -1;
+		}
+		cout << "collided";
+	}
+
+	if(ball.collidesWith(p2))
+	{
+		if (ballVel.x > 0)
+		{
+			ballVel.x *= -1;
+		}
+		cout << "collided";
+	}
+}
 
 // ----- User input.
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -178,6 +205,9 @@ int main()
 		p1.update(dt);
 		p2.update(dt);
 		ball.update(dt);
+
+		// Check collisions
+		checkCollisions();
 
 		// Check if ball has left screen on either side, increment points
 		if (ball.location.x > 3) {
