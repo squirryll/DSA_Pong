@@ -74,7 +74,7 @@ vec3 GameObject::getHalfWidths()
 void GameObject::update(float dt)
 {
 	//netForce += vec3(0, -0.5, 0); // Gravity
-	//netForce += -velocity * 0.2f; // Drag
+	netForce += -velocity * 0.5f; // Drag
 	velocity += (dt * netForce) / mass;
 	location += velocity * dt;
 	netForce = vec3(0);

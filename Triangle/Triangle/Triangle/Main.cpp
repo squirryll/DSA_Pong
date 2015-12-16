@@ -29,7 +29,8 @@ GameObject p2(vec3(0, 0, 0));
 GameObject ball(vec3(0, 0, 0));
 
 // Some Game Variables
-int pSpeed = 2;
+int pSpeed = 4;
+int ballSpeed = 10;
 int p1Score = 0;
 int p2Score = 0;
 vec3 ballVel = vec3(0, 0, 0);
@@ -47,19 +48,41 @@ void checkCollisions()
 	{
 		if (ballVel.x < 0)
 		{
-			ballVel.x *= -1;
+			ballVel.x = ball.location.x - p1.location.x;
+			ballVel.y = ball.location.y - p1.location.y;
+			ballVel = vec3(ballVel.x / ballVel.length() * ballSpeed, ballVel.y / ballVel.length() * ballSpeed, 0);
 		}
-		cout << "collided";
 	}
 
 	if(ball.collidesWith(p2))
 	{
 		if (ballVel.x > 0)
 		{
-			ballVel.x *= -1;
+			ballVel.x = ball.location.x - p2.location.x;
+			ballVel.y = ball.location.y - p2.location.y;
+			ballVel = vec3(ballVel.x / ballVel.length() * ballSpeed, ballVel.y / ballVel.length() * ballSpeed, 0);
 		}
-		cout << "collided";
 	}
+}
+
+// Reset the initial velocity of the ball
+void reset() {
+	// Randomize starting direction
+	int dir = rand() % 2;
+	if (dir == 0) { ballVel = vec3(1, 0, 0); }
+	else { ballVel = vec3(-1, 0, 0); }
+	// Reset location
+	ball.location = vec3(0, 0, 0);
+	// Reset players
+	p1.location = vec3(-2, 0, 0);
+	p1.netForce = vec3(0, 0, 0);
+	p1.velocity = vec3(0, 0, 0);
+	p2.location = vec3(2, 0, 0);
+	p2.netForce = vec3(0, 0, 0);
+	p2.velocity = vec3(0, 0, 0);
+	ball.location = vec3(0, 0, 0);
+	ball.netForce = vec3(0, 0, 0);
+	ball.velocity = vec3(0, 0, 0);
 }
 
 // ----- User input.
@@ -71,7 +94,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 		if(p1.location.y < 2)
 			p1.netForce += vec3(0, pSpeed, 0);
 	}
-	if (key == GLFW_KEY_S)
+	else if (key == GLFW_KEY_S)
 	{
 		if (p1.location.y > -2)
 			p1.netForce += vec3(0, -pSpeed, 0);
@@ -99,27 +122,10 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	if (key == GLFW_KEY_R)
 	{
 		/// TODO: Reset game.
-		p1.location = vec3(-1.5, 0, 0);
-		p1.netForce = vec3(0, 0, 0);
-		p1.velocity = vec3(0, 0, 0);
-		p2.location = vec3(1.5, 0, 0);
-		p2.netForce = vec3(0, 0, 0);
-		p2.velocity = vec3(0, 0, 0);
-		ball.location = vec3(0, 0, 0);
-		ball.netForce = vec3(0, 0, 0);
-		ball.velocity = vec3(0, 0, 0);
+		reset();
 		p1Score = 0;
 		p2Score = 0;
 	}
-}
-
-// Reset the initial velocity of the ball
-void resetBall() {
-	int dir = rand() % 2;
-	if(dir == 0){ballVel = vec3(1, 0, 0); }
-	else { ballVel = vec3(-1, 0, 0); }
-
-	ball.location = vec3(0,0,0);
 }
 
 int main()
@@ -167,12 +173,12 @@ int main()
 	//Mesh *poly = new Mesh("Poly.obj");
 
 	// Assign player objects.
-	p1 = GameObject(cube, shaderProgramIndex, vec3(-1.5, 0, 0), vec3(0.3, 1, 1), vec3(0, 0, 1));
-	p2 = GameObject(cube, shaderProgramIndex, vec3(1.5, 0, 0), vec3(0.3, 1, 1), vec3(0, 0, 1));
+	p1 = GameObject(cube, shaderProgramIndex, vec3(-2, 0, 0), vec3(0.3, 1, 1), vec3(0, 0, 1));
+	p2 = GameObject(cube, shaderProgramIndex, vec3(2, 0, 0), vec3(0.3, 1, 1), vec3(0, 0, 1));
 	ball = GameObject(cube, shaderProgramIndex, vec3(0, 0, 0), vec3(0.3, 0.3, 0.3), vec3(0, 0, 1));
 
 	// Set ball direction
-	resetBall();
+	reset();
 
 	// Engage drawing modes.
 	glClearColor(0.392f, 0.584f, 0.929f, 1.0f);
@@ -209,14 +215,22 @@ int main()
 		// Check collisions
 		checkCollisions();
 
+		// Check if ball has hit top or bottom of screen, reverse y direction
+		if (ball.location.y > 2) {
+			ballVel.y *= -1;
+		}
+		if (ball.location.y < -2) {
+			ballVel.y *= -1;
+		}
+
 		// Check if ball has left screen on either side, increment points
 		if (ball.location.x > 3) {
 			p1Score++;
-			resetBall();
+			reset();
 		}
 		if (ball.location.x < -3) {
 			p2Score++;
-			resetBall();
+			reset();
 		}
 
 		// Ensure player paddles do not leave the screen
