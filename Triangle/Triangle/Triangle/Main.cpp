@@ -34,6 +34,10 @@ float ballSpeed = 10;
 int p1Score = 0;
 int p2Score = 0;
 vec3 ballVel = vec3(0, 0, 0);
+bool p1Up = false;
+bool p1Down = false;
+bool p2Up = false;
+bool p2Down = false;
 
 // ----- Random number generation
 float randomNumber(float min, float max)
@@ -94,26 +98,44 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 {
 	// Player 1.
 	if (key == GLFW_KEY_W)
-	{	
-		if(p1.location.y < 2)
-			p1.netForce += vec3(0, pSpeed, 0);
-	}
-	else if (key == GLFW_KEY_S)
 	{
-		if (p1.location.y > -2)
-			p1.netForce += vec3(0, -pSpeed, 0);
+		p1Up = true;
+	}
+
+	if (key == GLFW_KEY_W && action == GLFW_RELEASE)
+	{
+		p1Up = false;
+	}
+
+	if (key == GLFW_KEY_S)
+	{
+		p1Down = true;
+	}
+
+	if (key == GLFW_KEY_S && action == GLFW_RELEASE)
+	{
+		p1Down = false;
 	}
 
 	// Player 2.
 	if (key == GLFW_KEY_UP)
 	{
-		if (p2.location.y < 2)
-			p2.netForce += vec3(0, pSpeed, 0);
+		p2Up = true;
 	}
+
+	if (key == GLFW_KEY_UP && action == GLFW_RELEASE)
+	{
+		p2Up = false;
+	}
+
 	if (key == GLFW_KEY_DOWN)
 	{
-		if (p2.location.y > -2)
-			p2.netForce += vec3(0, -pSpeed, 0);
+		p2Down = true;
+	}
+
+	if (key == GLFW_KEY_DOWN && action == GLFW_RELEASE)
+	{
+		p2Down = false;
 	}
 
 	// Quit.
@@ -126,9 +148,47 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	if (key == GLFW_KEY_R)
 	{
 		/// TODO: Reset game.
-		reset();
+		p1.location = vec3(-1.5, 0, 0);
+		p1.netForce = vec3(0, 0, 0);
+		p1.velocity = vec3(0, 0, 0);
+		p2.location = vec3(1.5, 0, 0);
+		p2.netForce = vec3(0, 0, 0);
+		p2.velocity = vec3(0, 0, 0);
+		ball.location = vec3(0, 0, 0);
+		ball.netForce = vec3(0, 0, 0);
+		ball.velocity = vec3(0, 0, 0);
 		p1Score = 0;
 		p2Score = 0;
+	}
+}
+
+// move the players based on booleans
+void movePlayers()
+{
+	// player 1
+	if (p1Up)
+	{
+		if (p1.location.y < 2)
+			p1.netForce += vec3(0, pSpeed, 0);
+	}
+
+	if (p1Down)
+	{
+		if (p1.location.y > -2)
+			p1.netForce += vec3(0, -pSpeed, 0);
+	}
+
+	// player 2
+	if (p2Up)
+	{
+		if (p2.location.y < 2)
+			p2.netForce += vec3(0, pSpeed, 0);
+	}
+
+	if (p2Down)
+	{
+		if (p2.location.y > -2)
+			p2.netForce += vec3(0, -pSpeed, 0);
 	}
 }
 
@@ -205,7 +265,11 @@ int main()
 		// Process queued window and input callback events.
 		glfwPollEvents();
 
-		/// TODO: Set up collision detection here to change ballVel
+		// Check collisions
+		checkCollisions();
+
+		// Check if players are allowed to move
+		movePlayers();
 
 		// Update ball's velocity for movement
 		ball.velocity = ballVel;
@@ -215,9 +279,6 @@ int main()
 		p1.update(dt);
 		p2.update(dt);
 		ball.update(dt);
-
-		// Check collisions
-		checkCollisions();
 
 		// Check if ball has hit top or bottom of screen, reverse y direction
 		if (ball.location.y > 2) {
