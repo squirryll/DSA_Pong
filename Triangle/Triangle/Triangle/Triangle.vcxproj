@@ -72,7 +72,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(ProjectDir);$(ProjectDir)\glew-1.13.0\include;$(ProjectDir)\glfw-3.1.1\include;$(ProjectDir)\glm-0.9.7.0\glm;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)\glfw-3.1.1\lib;$(ProjectDir)\glew-1.13.0\lib\Release\Win32;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(ProjectDir)\glfw-3.1.1\lib;$(ProjectDir)\glew-1.13.0\lib\Release\Win32;$(ProjectDir);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -80,7 +80,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>$(ProjectDir);$(ProjectDir)\glew-1.13.0\include;$(ProjectDir)\glfw-3.1.1\include;$(ProjectDir)\glm-0.9.7.0\glm;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)\glfw-3.1.1\lib;$(ProjectDir)\glew-1.13.0\lib\Release\Win32;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(ProjectDir)\glfw-3.1.1\lib;$(ProjectDir)\glew-1.13.0\lib\Release\Win32;$(ProjectDir);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -98,7 +98,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;glew32.lib;glfw3.lib;SOIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glew32.lib;glfw3.lib;SOIL.lib;FreeImage.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -131,7 +131,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>opengl32.lib;glew32.lib;glfw3.lib;SOIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glew32.lib;glfw3.lib;SOIL.lib;FreeImage.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

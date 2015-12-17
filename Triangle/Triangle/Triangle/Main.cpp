@@ -233,7 +233,7 @@ int main()
 	Camera cam(shaderProgramIndex, vec3(0, 0, 3));
 
 	// Initialize basic cube mesh.
-	Mesh *cube = new Mesh("Cube.obj");
+	Mesh *cube = new Mesh("Cube2.obj");
 	//Mesh *poly = new Mesh("Poly.obj");
 
 	// Assign player objects.
